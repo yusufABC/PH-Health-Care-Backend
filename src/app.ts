@@ -25,6 +25,10 @@ app.use(cookieParser())
 
 app.use('/api/v1/auth', AuthRoutes)
 
+app.get("/test",async(req: Request, res: Response) => {
+    
+})
+
 // Basic route
 app.get('/', async (req: Request, res: Response) => {
     res.status(httpStatus.OK).json({
