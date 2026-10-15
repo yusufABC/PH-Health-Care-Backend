@@ -1,11 +1,12 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import express, { type Application, type Request, type Response } from "express";
+import express, { NextFunction, type Application, type Request, type Response } from "express";
 import httpStatus from "http-status";
 import config from "./app/config";
 import { globalErrorHandler } from "./app/middleware/globalErrorHandler";
 import { notFound } from "./app/middleware/notFound";
 import { AuthRoutes } from "./app/module/auth/auth.route";
+import { redisClient } from "./app/lib/redis";
 
 const app: Application = express();
 
@@ -25,8 +26,25 @@ app.use(cookieParser());
 
 app.use("/api/v1/auth", AuthRoutes);
 
-app.get("/test",async(req: Request, res: Response) => {
-    
+app.get("/test",async(req: Request, res: Response,next:NextFunction) => {
+   try {
+	 await redisClient.set("forgot_password_otp:test@gmail.com", "123456",{
+		expiration:{
+			type:"EX",
+			value:60
+		}
+	 })
+
+	 	res.status(httpStatus.OK).json({
+			success: true,
+			message: "Welcome to PH Healthcare System Backend",
+			data: null,
+		});
+   } catch (error) {
+	console.log(error);
+	next(error);
+	
+   }
 })
 
 // Basic route

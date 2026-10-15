@@ -29,7 +29,15 @@ import z from "zod";
 
 	})
 
+	const OtpZodValidation=z.object({
+		email:z
+		.email({ message: "Please enter a valid email address" })
+   	 .min(1, { message: "Email is required" })
+    .transform((val) => val.toLowerCase().trim())
+	})
+
     export const UserValidation={
         PatientRegisterZodValidation,
-		PaitentLoginZodValidation
+		PaitentLoginZodValidation,
+		OtpZodValidation
     }
