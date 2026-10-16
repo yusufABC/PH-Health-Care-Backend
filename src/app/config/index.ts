@@ -28,5 +28,9 @@ tester_admin_name: process.env.TESTER_ADMIN_NAME!,
 	tester_doctor_name: process.env.TESTER_DOCTOR_NAME!,
 	tester_doctor_email: process.env.TESTER_DOCTOR_EMAIL!,
 	tester_doctor_password: process.env.TESTER_DOCTOR_PASSWORD!,
-
+    smtp_password: process.env.SMTP_PASSWORD!,
+    smtp_user: process.env.SMTP_USER!,
+    smtp_host: process.env.SMTP_HOST!,
+    smtp_port: process.env.SMTP_PORT!,
+    email_sender: process.env.EMAIL_SENDER!,
 };

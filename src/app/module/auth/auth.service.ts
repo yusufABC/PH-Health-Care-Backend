@@ -20,6 +20,9 @@ import { OAuth2Client } from "google-auth-library";
 import { googleClient } from "../../lib/googleAuth";
 import crypto from "crypto";
 import { redisClient } from "../../lib/redis";
+import { Transporter } from "../../lib/nodemailer";
+import path from "path";
+import ejs from "ejs"
 
 const registerPatient = async (payload: IRegisterPatientPayload) => {
   const { name, password, patient: patientData } = payload;
@@ -360,16 +363,41 @@ const forgotPassword = async (payload: IForgotPasswordPaylod) => {
   if (isUserExist.status === "BLOCKED") {
     throw new Error("This user is blocked !.Please contact with admin");
   }
+  if(!isUserExist.emailVerified){
+    throw new Error("User email isn't verified");
+
+  }
 
   const otp = crypto.randomInt(100000, 1000000).toString();
   const key = `forget-password-otp:${isUserExist.email}`;
+  const expiresInSecond= 5 * 60
 
   await redisClient.set(key, otp, {
     expiration: {
       type: "EX",
-      value: 5 * 60,
+      value:expiresInSecond
     },
   });
+
+  const templatePath=path.join(process.cwd(),"src/app/templates/forgot-password.ejs")
+
+  const renderData={
+    name:isUserExist.name,
+    otp,
+    expiresInMinutes:expiresInSecond/60
+
+  }
+  const html=await ejs.renderFile(templatePath,renderData)
+
+  await Transporter.sendMail({
+    from:config.email_sender,
+    to:isUserExist.email,
+    subject:"Forgot Password",
+    html
+  })
+
+
+
 };
 const resetPassword = async (payload: IResetPasswordPayload) => {
   const { email, newPassword, otp } = payload;
@@ -421,6 +449,23 @@ const resetPassword = async (payload: IResetPasswordPayload) => {
   });
 
   await redisClient.del([key]);
+
+// Connect Path and email and feed it to nodemailer function 
+  const templatePath= path.join(process.cwd(),"src/app/templates/reset-password-confirmation.ejs")
+
+  const renderData={
+    name:isUserExist.name
+  }
+  const html=await ejs.renderFile(templatePath,renderData)
+
+  // Send Mail using nodemailer
+
+  await Transporter.sendMail({
+    from:config.email_sender,
+    to:isUserExist.email,
+    subject:"Your Password Reset",
+    html
+  })
 };
 
 export const AuthService = {
