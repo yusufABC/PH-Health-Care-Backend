@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <title>Verify your email</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f5f7;font-family:Arial,Helvetica,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f4f5f7;padding:24px 12px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:520px;background-color:#ffffff;border-radius:12px;overflow:hidden;">
+          <tr>
+            <td style="background-color:#4f46e5;padding:24px;text-align:center;">
+              <h1 style="margin:0;font-size:22px;color:#ffffff;font-weight:700;">Verify your email</h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:32px 28px;color:#1f2937;font-size:15px;line-height:1.6;">
+              <p style="margin:0 0 12px;">Hi <strong><%= name %></strong>,</p>
+              <p style="margin:0 0 20px;">
+                Use the code below to verify <strong><%= email %></strong>.
+              </p>
+
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="center" style="background-color:#eef2ff;border:1px dashed #4f46e5;border-radius:10px;padding:18px;">
+                    <span style="font-size:34px;font-weight:700;letter-spacing:10px;color:#4f46e5;font-family:'Courier New',monospace;">
+                      <%= otp %>
+                    </span>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin:20px 0 0;text-align:center;color:#6b7280;font-size:14px;">
+                This code expires in <strong><%= expiresInMinutes %> minutes</strong>.
+              </p>
+
+              <hr style="border:none;border-top:1px solid #e5e7eb;margin:28px 0 16px;">
+
+              <p style="margin:0;color:#6b7280;font-size:13px;">
+                Never share this code with anyone. If you didn't request it, you can safely ignore this email.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color:#f9fafb;padding:16px;text-align:center;color:#9ca3af;font-size:12px;">
+              &copy; <%= new Date().getFullYear() %>. All rights reserved.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

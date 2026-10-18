@@ -29,15 +29,36 @@ import z from "zod";
 
 	})
 
-	const OtpZodValidation=z.object({
+	const PaitentEmailVerifyZodValidation=z.object({
+		email:z.email(),
+		otp: z.string().length(6),
+	})
+
+	const ForgotPasswordZodSchema=z.object({
 		email:z
 		.email({ message: "Please enter a valid email address" })
    	 .min(1, { message: "Email is required" })
     .transform((val) => val.toLowerCase().trim())
 	})
 
+
+const ResetPasswordZodSchema = z.object({
+	email: z.email(),
+	newPassword: z
+		.string()
+		.min(8, "Password Must Minimum 8 Characters Long.")
+		.regex(/[a-z]/, "Password must contain atleast 1 Lowercase Letter")
+		.regex(/[A-Z]/, "Password must contain atleast 1 Uppercase Letter")
+
+		.regex(/[0-9]/, "Password must contain atleast 1 Number")
+		.regex(/[^A-Za-z0-9]/, "Password must contain atleast 1 Special Character"),
+	otp: z.string().length(6),
+});
+
     export const UserValidation={
         PatientRegisterZodValidation,
 		PaitentLoginZodValidation,
-		OtpZodValidation
+		ForgotPasswordZodSchema,
+		ResetPasswordZodSchema,
+		PaitentEmailVerifyZodValidation
     }
