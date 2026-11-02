@@ -21,3 +21,31 @@ enum AuthProvider {
   GOOGLE
   CREDENTIALS
 }
+
+enum AppointmentStatus {
+  PENDING
+  COMPLETED
+  ONGOING
+  CONFIRMED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+  FAILED
+  CANCELLED
+  REFUNDED
+}
+
+enum DoctorVerificationStatus {
+  APPROVED
+  REJECTED
+  PENDING
+}
+
+
+enum ScheduleStatus {
+  DRAFT
+  PUBLISHED
+}

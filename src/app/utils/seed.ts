@@ -1,3 +1,5 @@
+import httpStatus from "http-status";
+import { AppError } from "./AppError";
 import bcrypt from "bcryptjs"
 import { Role } from "../../generated/prisma/enums"
 import config from "../config"
@@ -22,7 +24,7 @@ export const SuperAdminSeed=async()=>{
 
    
 		if (!name || !email || !password) {
-			throw new Error("Super Admin Name , Email, Password Missing In Env File!!!",);
+			throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, "Super Admin Name , Email, Password Missing In Env File!!!");
 		}
 
    const hashedPassword=await bcrypt.hash(password,Number(config.bcrypt_salt_rounds) )
@@ -70,7 +72,7 @@ export const TesterAdminSeed=async()=>{
 
    
 		if (!name || !email || !password) {
-			throw new Error("Tester Admin Name , Email, Password Missing In Env File!!!",);
+			throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, "Tester Admin Name , Email, Password Missing In Env File!!!");
 		}
 
    const hashedPassword=await bcrypt.hash(password,Number(config.bcrypt_salt_rounds) )
@@ -117,7 +119,7 @@ export const TesterDoctorSeed=async()=>{
 
    
 		if (!name || !email || !password) {
-			throw new Error("Tester Doctor Name , Email, Password Missing In Env File!!!",);
+			throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, "Tester Doctor Name , Email, Password Missing In Env File!!!");
 		}
 
    const hashedPassword=await bcrypt.hash(password,Number(config.bcrypt_salt_rounds) )
@@ -129,7 +131,18 @@ export const TesterDoctorSeed=async()=>{
         password:hashedPassword,
         role:Role.DOCTOR,
         emailVerified:true,
-        needPasswordChange:false
+        needPasswordChange:false,
+        doctor:{
+            create:{
+                email,
+                name,
+                licenseNumber:"BMDC000000",
+                specialization:"Nurology",
+                yearsOfExperience:100,
+                
+
+            }
+        }
     }
    })
 console.log("Tester Doctor Created : ", superAdmin);
